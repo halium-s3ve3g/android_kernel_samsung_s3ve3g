@@ -762,9 +762,13 @@ __tagtable(ATAG_REVISION, parse_tag_revision);
 static int __init parse_tag_cmdline(const struct tag *tag)
 {
 #if defined(CONFIG_CMDLINE_EXTEND)
-	strlcat(default_command_line, " ", COMMAND_LINE_SIZE);
-	strlcat(default_command_line, tag->u.cmdline.cmdline,
-		COMMAND_LINE_SIZE);
+	int cmdlineSize = COMMAND_LINE_SIZE -8;
+ 	char tmp[cmdlineSize];
+ 	strlcpy(tmp, default_command_line, cmdlineSize);
+  	strlcpy(default_command_line, tag->u.cmdline.cmdline, cmdlineSize);
+  	strlcat(default_command_line, " ", cmdlineSize);
+ 	strlcat(default_command_line, tmp, cmdlineSize);
+	pr_warning("Appending default kernel command line to tag cmdline\n");
 #elif defined(CONFIG_CMDLINE_FORCE)
 	pr_warning("Ignoring tag cmdline (using the default kernel command line)\n");
 #else
