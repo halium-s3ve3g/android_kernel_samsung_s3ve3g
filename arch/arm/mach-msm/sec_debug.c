@@ -1924,9 +1924,13 @@ int sec_debug_subsys_init(void)
 	strlcpy(secdbg_krait->state, "Init", sizeof(secdbg_krait->state) + 1);
 	secdbg_krait->nr_cpus = CONFIG_NR_CPUS;
 
+#ifdef CONFIG_PRINTK
+#ifdef CONFIG_SEC_DEBUG_SUBSYS
 	sec_debug_subsys_set_kloginfo(&secdbg_krait->log.idx_paddr,
 		&secdbg_krait->log.log_paddr, &secdbg_krait->log.size);
 	sec_debug_subsys_set_logger_info(&secdbg_krait->logger_log);
+#endif
+#endif
 
 	secdbg_krait->tz_core_dump =
 		(struct tzbsp_dump_buf_s **)get_wdog_regsave_paddr();
