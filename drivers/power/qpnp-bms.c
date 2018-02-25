@@ -11,7 +11,6 @@
  */
 
 #define pr_fmt(fmt)	"BMS: %s: " fmt, __func__
-#define DEBUG
 
 #include <linux/module.h>
 #include <linux/types.h>
