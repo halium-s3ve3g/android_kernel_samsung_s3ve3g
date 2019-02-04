@@ -5,6 +5,7 @@
 #include <linux/err.h>
 #include <linux/sched.h>
 #include <asm/uaccess.h>
+#include <linux/vmalloc.h>
 
 #include "internal.h"
 
@@ -163,6 +164,16 @@ void *krealloc(const void *p, size_t new_size, gfp_t flags)
 	return ret;
 }
 EXPORT_SYMBOL(krealloc);
+
+void kvfree(const void *addr)
+{
+	if (is_vmalloc_addr(addr))
+		vfree(addr);
+	else
+		kfree(addr);
+}
+EXPORT_SYMBOL(kvfree);
+
 
 /**
  * kzfree - like kfree but zero memory
